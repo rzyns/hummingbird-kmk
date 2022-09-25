@@ -1,0 +1,12 @@
+{
+    "python.languageServer": "Pylance",
+    "python.linting.pylintEnabled": false,
+    "python.analysis.extraPaths": [
+        "/Users/janusz/.vscode/extensions/joedevivo.vscode-circuitpython-0.1.19-darwin-x64/boards/0x2886/0x0042",
+        "/Users/janusz/.vscode/extensions/joedevivo.vscode-circuitpython-0.1.19-darwin-x64/stubs",
+        "/Users/janusz/Library/Application Support/Code/User/globalStorage/joedevivo.vscode-circuitpython/bundle/20220924/adafruit-circuitpython-bundle-py-20220924/lib"
+    ],
+    "circuitpython.board.version": "8.0.0-beta.0",
+    "circuitpython.board.vid": "0x2886",
+    "circuitpython.board.pid": "0x0042"
+}
