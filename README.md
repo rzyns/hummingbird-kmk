@@ -6,8 +6,6 @@ KMK implementation for hummingbird keyboard
 * Set environment variable `GIT_DIR` to where you want to keep the bare repository
 * Set environment variable `GIT_WORK_TREE` to where the `CIRCUITPY` volume is mounted
 
-Or, you could set the appropriate git config options in `hummingbird-kmk.git/config`
-
 ## Example
 
 ```shell
