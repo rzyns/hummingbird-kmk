@@ -6,7 +6,13 @@ from kmk.kmk_keyboard import KMKKeyboard
 from kmk.keys import KC
 from kmk.scanners import DiodeOrientation, intify_coordinate as ic
 
+from kmk.modules.layers import Layers
+from kmk.modules.sticky_mod import StickyMod
+
 keyboard = KMKKeyboard()
+
+keyboard.modules.append(Layers())
+keyboard.modules.append(StickyMod())
 
 keyboard.col_pins = (board.D6, board.D7, board.D8, board.D9, board.D10)
 keyboard.row_pins = (board.D0, board.D1, board.D2, board.D3, board.D4, board.D5)
@@ -28,24 +34,56 @@ P09 = 3
 P10 = 4
 
 keyboard.coord_mapping = [
-    ic(P00, P06, L), ic(P01, P06, L), ic(P00, P07, L), ic(P01, P07, L), ic(P00, P08, L),        ic(P01, P08, L), ic(P00, P09, L), ic(P01, P09, L), ic(P00, P10, L), ic(P01, P10, L),
-    ic(P02, P06, L), ic(P03, P06, L), ic(P02, P07, L), ic(P03, P07, L), ic(P02, P08, L),        ic(P03, P08, L), ic(P02, P09, L), ic(P03, P09, L), ic(P02, P10, L), ic(P03, P10, L),
-                     ic(P04, P06, L), ic(P05, P06, L), ic(P04, P07, L),                                          ic(P05, P08, L), ic(P04, P09, L), ic(P05, P09, L),
+                     ic(P01, P06, L), ic(P00, P07, L), ic(P01, P07, L), ic(P00, P08, L),        ic(P01, P08, L), ic(P00, P09, L), ic(P01, P09, L), ic(P00, P10, L),
+    ic(P00, P06, L), ic(P03, P06, L), ic(P02, P07, L), ic(P03, P07, L), ic(P02, P08, L),        ic(P03, P08, L), ic(P02, P09, L), ic(P03, P09, L), ic(P02, P10, L), ic(P01, P10, L),
+    ic(P02, P06, L), ic(P04, P06, L), ic(P05, P06, L), ic(P04, P07, L),                                          ic(P05, P08, L), ic(P04, P09, L), ic(P05, P09, L), ic(P03, P10, L),
                                                        ic(P05, P07, L), ic(P04, P08, L),        ic(P05, P10, L), ic(P04, P10, L),
 ]
 
-print(keyboard.coord_mapping)
+ALPHA = 0
+SYM = 1
+NUM = 2
+NAV = 3
+FN = 4
 
 keyboard.keymap = [
+    # ALPHA
     [
-        KC.Q, KC.W, KC.E, KC.R, KC.T,        KC.Y,    KC.U, KC.I,     KC.O,   KC.P,
-        KC.A, KC.S, KC.D, KC.F, KC.G,        KC.H,    KC.J, KC.K,     KC.L,   KC.SCOLON,
-              KC.X, KC.C, KC.V,                       KC.M, KC.COMMA, KC.DOT,
-                          KC.B, KC.SPC,      KC.BSPC, KC.N,
+              KC.W, KC.E, KC.R,             KC.T,                                  KC.Y,    KC.U,    KC.I,     KC.O,
+        KC.A, KC.S, KC.D, KC.F,             KC.G,                                  KC.H,    KC.J,    KC.K,     KC.L,   KC.SCOLON,
+        KC.Z, KC.X, KC.C, KC.V,                                                             KC.M,    KC.COMMA, KC.DOT, KC.SLASH,
+                          KC.LT(SYM, KC.B), KC.SPC,                                KC.BSPC, KC.LT(NUM, KC.N),
     ],
+
+    # SYM
+    [
+                  KC.AT,    KC.HASH, KC.DLR,     KC.PERC,                          KC.CIRC,    KC.AMPR,          KC.ASTR,     KC.UNDS,
+        KC.TAB,   KC.MINS,  KC.EQL,  KC.EXLM,    KC.SCOLON,                        KC.BSLS,    KC.GRAVE,         KC.LPRN,     KC.RPRN,  KC.ENT,
+        KC.COMMA, KC.DOT,   KC.BSLS, KC.QUOT,                                                  KC.LBRC,          KC.RBRC,     KC.LCBR,  KC.RCBR,
+                                     KC.NO,      KC.SPC,                           KC.BSPC,    KC.MO(NAV),
+    ],
+
+    # NUM
+    [
+                  KC.LPRN,  KC.LCBR, KC.LBRC,    KC.NO,                            KC.EQL,     KC.N7,            KC.N8,       KC.N9,
+        KC.TAB,   KC.UNDS,  KC.PLUS, KC.RPRN,    KC.COLON,                         KC.N0,      KC.N4,            KC.N5,       KC.N6,    KC.ENT,
+        KC.LABK,  KC.RABK,  KC.BSLS, KC.DQUO,                                                  KC.N1,            KC.N2,       KC.N3,    KC.QUES,
+                                     KC.MO(NAV), KC.SPC,                           KC.BSPC,    KC.NO,
+    ],
+
+    # NAV
+    [
+                  KC.TRNS,  KC.TRNS, KC.TRNS, KC.TRNS,                             KC.HOME,    KC.NO,            KC.NO,       KC.NO,
+        KC.TRNS,  KC.TRNS,  KC.TRNS, KC.TRNS, KC.TRNS,                             KC.LEFT,    KC.DOWN,          KC.UP,       KC.LEFT,  KC.ENT,
+        KC.TRNS,  KC.TRNS,  KC.TRNS, KC.TRNS,                                                  KC.PGDN,          KC.PGUP,     KC.END,   KC.NO,
+                                     KC.NO,   KC.SPC,                              KC.BSPC,    KC.NO,
+    ],
+
+    # FN
+    [],
 ]
 
-keyboard.debug_enabled = True
+# keyboard.debug_enabled = True
 
 if __name__ == '__main__':
     keyboard.go()
