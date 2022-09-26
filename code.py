@@ -7,12 +7,15 @@ from kmk.keys import KC
 from kmk.scanners import DiodeOrientation, intify_coordinate as ic
 
 from kmk.modules.layers import Layers
-from kmk.modules.sticky_mod import StickyMod
+from kmk.modules.oneshot import OneShot
 
 keyboard = KMKKeyboard()
 
-keyboard.modules.append(Layers())
-keyboard.modules.append(StickyMod())
+oneshot = OneShot()
+oneshot.tap_time = 1500
+
+keyboard.modules.append(Layers()) 
+keyboard.modules.append(oneshot)
 
 keyboard.col_pins = (board.D6, board.D7, board.D8, board.D9, board.D10)
 keyboard.row_pins = (board.D0, board.D1, board.D2, board.D3, board.D4, board.D5)
@@ -44,7 +47,8 @@ ALPHA = 0
 SYM = 1
 NUM = 2
 NAV = 3
-FN = 4
+RFN = 4
+LFN = 5
 
 keyboard.keymap = [
     # ALPHA
@@ -73,14 +77,27 @@ keyboard.keymap = [
 
     # NAV
     [
-                  KC.TRNS,  KC.TRNS, KC.TRNS, KC.TRNS,                             KC.HOME,    KC.NO,            KC.NO,       KC.NO,
-        KC.TRNS,  KC.TRNS,  KC.TRNS, KC.TRNS, KC.TRNS,                             KC.LEFT,    KC.DOWN,          KC.UP,       KC.LEFT,  KC.ENT,
-        KC.TRNS,  KC.TRNS,  KC.TRNS, KC.TRNS,                                                  KC.PGDN,          KC.PGUP,     KC.END,   KC.NO,
+                           KC.TRNS,  KC.TRNS, KC.TRNS, KC.TRNS,                    KC.HOME,    KC.NO,            KC.NO,       KC.NO,
+        KC.TRNS,           KC.TRNS,  KC.TRNS, KC.TRNS, KC.TRNS,                    KC.LEFT,    KC.DOWN,          KC.UP,       KC.LEFT,  KC.ENT,
+        KC.OS(KC.MO(RFN)), KC.TRNS,  KC.TRNS, KC.TRNS,                                         KC.PGDN,          KC.PGUP,     KC.END,   KC.OS(KC.MO(LFN)),
                                      KC.NO,   KC.SPC,                              KC.BSPC,    KC.NO,
     ],
 
-    # FN
-    [],
+    # RFN
+    [
+                  KC.TRNS,  KC.TRNS, KC.TRNS, KC.TRNS,                             KC.F11,   KC.F7, KC.F8, KC.F9,
+        KC.TRNS,  KC.TRNS,  KC.TRNS, KC.TRNS, KC.TRNS,                             KC.F10,   KC.F4, KC.F5, KC.F6, KC.NO,
+        KC.TRNS,  KC.TRNS,  KC.TRNS, KC.TRNS,                                                KC.F1, KC.F2, KC.F3, KC.NO,
+                                     KC.NO,   KC.SPC,                              KC.BSPC,  KC.NO,
+    ],
+
+    # LFN
+    [
+                KC.F7,  KC.F8, KC.F9, KC.F11,                                      KC.TRNS, KC.TRNS, KC.TRNS, KC.TRNS,
+        KC.NO,  KC.F4,  KC.F5, KC.F6, KC.F10,                                      KC.TRNS, KC.TRNS, KC.TRNS, KC.TRNS, KC.TRNS,
+        KC.NO,  KC.F1,  KC.F2, KC.F3,                                                       KC.TRNS, KC.TRNS, KC.TRNS, KC.TRNS,
+                               KC.NO, KC.SPC,                                      KC.BSPC, KC.NO,
+    ],
 ]
 
 # keyboard.debug_enabled = True
