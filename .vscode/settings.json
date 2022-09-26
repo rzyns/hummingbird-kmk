@@ -8,5 +8,8 @@
     ],
     "circuitpython.board.version": "8.0.0-beta.0",
     "circuitpython.board.vid": "0x2886",
-    "circuitpython.board.pid": "0x0042"
+    "circuitpython.board.pid": "0x0042",
+    "python.analysis.diagnosticSeverityOverrides": {
+        "reportMissingModuleSource": "none"
+    }
 }
