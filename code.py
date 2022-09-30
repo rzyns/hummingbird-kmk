@@ -3,21 +3,36 @@ print("Clickity-clack!")
 import board
 
 from kmk.kmk_keyboard import KMKKeyboard
-from kmk.keys import KC
+from kmk.keys import KC, make_key
+from kmk.modules import oneshot
 from kmk.scanners import DiodeOrientation, intify_coordinate as ic
 
 from kmk.modules.layers import Layers
 from kmk.modules.oneshot import OneShot
 from kmk.modules.modtap import ModTap
+from kmk.modules.combos import Combos, Chord
+
+from kmk.hid import HIDModes
 
 keyboard = KMKKeyboard()
 
 oneshot = OneShot()
-oneshot.tap_time = 1500
-
-keyboard.modules.append(Layers()) 
+oneshot.tap_time = 250
 keyboard.modules.append(oneshot)
-keyboard.modules.append(ModTap())
+
+modtap = ModTap()
+modtap.tap_time = 250
+keyboard.modules.append(modtap)
+
+combos = Combos()
+keyboard.modules.append(Combos())
+
+combos.combos = [
+    Chord((KC.Q, KC.W), KC.Z),
+]
+
+layers = Layers()
+keyboard.modules.append(Layers()) 
 
 keyboard.col_pins = (board.D6, board.D7, board.D8, board.D9, board.D10)
 keyboard.row_pins = (board.D0, board.D1, board.D2, board.D3, board.D4, board.D5)
@@ -58,7 +73,7 @@ keyboard.keymap = [
         KC.Q,                  KC.W,                 KC.E,                 KC.R,                 KC.T,                                  KC.Y,    KC.U,                 KC.I,                 KC.O,                 KC.P,
         KC.MT(KC.A, KC.LCTRL), KC.MT(KC.S, KC.LSFT), KC.MT(KC.D, KC.LALT), KC.MT(KC.F, KC.LGUI), KC.G,                                  KC.H,    KC.MT(KC.J, KC.LGUI), KC.MT(KC.K, KC.LALT), KC.MT(KC.L, KC.LSFT), KC.MT(KC.SCOLON, KC.LCTRL),
                                KC.X,                 KC.C,                 KC.V,                                                                 KC.M,                 KC.COMMA,             KC.DOT,
-                                                                           KC.LT(SYM, KC.B),     KC.SPC,                                KC.BSPC, KC.LT(NUM, KC.N),
+                                                                           KC.LT(SYM, KC.B, prefer_hold=True, tap_interrupted=False, tap_time=250),     KC.SPC,                                KC.BSPC, KC.LT(NUM, KC.N, prefer_hold=True, tap_interrupted=False, tap_time=250),
     ],
 
     # SYM
@@ -79,7 +94,7 @@ keyboard.keymap = [
 
     # NAV
     [
-        KC.ESC,            KC.TRNS,  KC.TRNS, KC.TRNS, KC.TRNS,                    KC.HOME,    KC.NO,            KC.NO,       KC.NO,    KC.BSPC,
+        KC.ESC,            KC.TRNS,  KC.TRNS, KC.TRNS, KC.BLE_REFRESH,             KC.HOME,    KC.NO,            KC.NO,       KC.NO,    KC.BSPC,
         KC.OS(KC.MO(RFN)), KC.TRNS,  KC.TRNS, KC.TRNS, KC.TRNS,                    KC.LEFT,    KC.DOWN,          KC.UP,       KC.RIGHT, KC.OS(KC.MO(LFN)),
                            KC.TRNS,  KC.TRNS, KC.TRNS,                                         KC.PGDN,          KC.PGUP,     KC.END,
                                      KC.TRNS, KC.SPC,                              KC.BSPC,    KC.TRNS,
@@ -105,4 +120,4 @@ keyboard.keymap = [
 # keyboard.debug_enabled = True
 
 if __name__ == '__main__':
-    keyboard.go()
+    keyboard.go(hid_type=HIDModes.BLE, ble_name="Hummingbird")
